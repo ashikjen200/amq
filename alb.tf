@@ -6,9 +6,10 @@ resource "aws_alb" "main" {
 
 resource "aws_alb_listener" "main" {
   load_balancer_arn = "${aws_alb.main.id}"
-  port              = 80
-  protocol          = "HTTP"
-
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2015-05"
+  certificate_arn   = "arn:aws:iam::279650025010:server-certificate/djin-candeprofile.dsv.int.pib.dowjones.io-20180405"
   default_action {
     target_group_arn = "${aws_alb_target_group.main.id}"
     type             = "forward"
@@ -16,10 +17,19 @@ resource "aws_alb_listener" "main" {
 }
 
 resource "aws_alb_target_group" "main" {
-  port        = "8080"
+  port        = "80"
   protocol    = "HTTP"
   vpc_id      = "${module.vpc.vpc_id}"
   target_type = "ip"
+  health_check {
+    interval                = 30              
+    port                    = "traffic-port"
+    protocol                = "HTTP"
+    path                    = "localhost/users"
+    timeout                 = 10             
+    healthy_threshold       = 5               
+    unhealthy_threshold     = 5              
+  }
 }
 
 resource "aws_security_group" "alb_sg" {

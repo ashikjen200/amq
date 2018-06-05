@@ -9,7 +9,7 @@ resource "aws_alb_listener" "main" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2015-05"
-  certificate_arn   = "arn:aws:iam::279650025010:server-certificate/djin-candeprofile.dsv.int.pib.dowjones.io-20180405"
+  certificate_arn   = "arn:aws:iam::708564602958:server-certificate/ssltest"
   default_action {
     target_group_arn = "${aws_alb_target_group.main.id}"
     type             = "forward"

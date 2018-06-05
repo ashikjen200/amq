@@ -25,7 +25,7 @@ resource "aws_alb_target_group" "main" {
     interval                = 30              
     port                    = "traffic-port"
     protocol                = "HTTP"
-    path                    = "localhost/users"
+    path                    = "/users"
     timeout                 = 10             
     healthy_threshold       = 5               
     unhealthy_threshold     = 5              
